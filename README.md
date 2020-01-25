@@ -55,7 +55,7 @@
 # Download this repo that contains my demo.rc script
 # Go back to /opt 'cd /opt/' and clone this repo 'git clone https://github.com/wond696/unicorn-demo.git'
 # Switch to /opt/unicorn-demo and review demo.rc 'cd /opt/unicorn-demo' and 'cat demo.rc'
-# My script is based on being logged in as a user named "admin", you may have to make modifications if you use a different account.
+# My script is based on being logged in as a user named "admin", you may have to make modifications if you use a different account. Also, ensure the quotes in the file remain quotes, some text editors try to change one to a reverse quote which breaks the process
 # You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and causes a keyboard buffering problem so I'm only do base collection in the script and uploading files.
 #
 #
