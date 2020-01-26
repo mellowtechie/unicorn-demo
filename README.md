@@ -68,7 +68,7 @@ These steps generate the Unicorn HTA payload, copy the payload into apache, and 
 Review the README.md  
 
 ```
-cat /opt/unicorn/README.md
+less /opt/unicorn/README.md
 ```
 
 ## Payload Delivery
@@ -93,7 +93,7 @@ git clone https://github.com/411Hall/JAWS.git
 Review the README.md  
 
 ```
-cat /opt/JAWS/README.md\
+less /opt/JAWS/README.md\
 ```  
 
 ## Optional - Adding delivery via spearphishing
@@ -115,7 +115,7 @@ git clone https://github.com/wond696/unicorn-demo.git
 Review the README.md  
 
 ```
-cat /opt/unicorn-demo/README.md
+less /opt/unicorn-demo/README.md
 ```  
 
 ### Unicorn Demo Assumptions
@@ -186,7 +186,7 @@ This step may take some additional research on your part.
 ## Review exlif.txt
 
 ```
-cat /opt/exfil.txt
+less /opt/exfil.txt
 ```
 
 ## Results
