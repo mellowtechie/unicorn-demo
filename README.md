@@ -1,5 +1,5 @@
 # Unicorn Demo 
-I have built this as a way to demo attacking a Windows 7 machine using metasploit and Unicorn's HTA attack.
+I have built this as a way to demo attacking a Windows 7 machine using metasploit and Unicorn's HTA attack.  
 Todd Murray pdxgeek57@gmail.com
 
 ## Environment Details
