@@ -8,8 +8,8 @@ Kali from https://www.kali.org/downloads/
 Unicorn from https://github.com/trustedsec/unicorn  
 Windows 7 ISO en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso from https://the-eye.eu/public/MSDN/Windows%207/  
 I used VMware 11.5 on MacOS Catalina 10.15.2 but you can use other HyperVisors.  
-## I would NOT reccomend AWS/Azure as they may interpret these activities as malicous and kill your environment/account
-    Note that VMware versions lower than 11 have display issues with VM's on Catalina  
+**I would NOT reccomend AWS/Azure as they may interpret these activities as malicous and kill your environment/account**  
+Note that VMware versions lower than 11 have display issues with VM's on Catalina  
 
 ## Kali Setup
 
