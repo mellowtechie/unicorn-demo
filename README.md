@@ -15,16 +15,16 @@ VMware Fusion lower than 11 have display issues with VM's on MacOS Catalina
 Download and install the latest Kali Linux 64-Bit Image https://www.kali.org/downloads/  
 Once your VM is up and running login prepare Metasploit, Apache, and Postgresql for use.
 
-'''
-apt update
-apt upgrade
-systemctl enable postgresql
-systemctl enable apache2
-systemctl start postgresql
-systemctl start apache2
-msfconsole
+```
+apt update  
+apt upgrade  
+systemctl enable postgresql  
+systemctl enable apache2  
+systemctl start postgresql  
+systemctl start apache2  
+msfconsole  
 exit
-'''
+```
 , perform all available updates, and enable Apache and Postgresql, and start up Metasp
 Run 'apt update' and then 'apt upgrade'. This will update Kali to the latest including metasploit which we will be using.  
 Enable Postgresql and Apache2 to start at boot 'systemctl enable postgresql' and 'systemctl enable apache2'  
