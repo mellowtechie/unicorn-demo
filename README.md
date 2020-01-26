@@ -4,7 +4,7 @@ Todd Murray pdxgeek57@gmail.com
 
 ## Environment Details
 
-Kali from https://www.kali.org/downloads/
+Kali from https://www.kali.org/downloads/  
 Unicorn from https://github.com/trustedsec/unicorn
 Windows 7 ISO en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso from https://the-eye.eu/public/MSDN/Windows%207/
 I used VMware 11.5 on MacOS Catalina 10.15.2 but you can use other HyperVisors.
