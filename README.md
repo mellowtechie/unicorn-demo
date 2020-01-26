@@ -55,7 +55,8 @@ Switch to /opt/unicorn-demo and review demo.rc 'cd /opt/unicorn-demo' and 'cat d
 My script is based on being logged in as a user named "admin", you may have to make modifications if you use a different account. Also, ensure the quotes in the file remain quotes, some text editors try to change one to a reverse quote which breaks the process  
 You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and causes a keyboard buffering problem so I'm only do base collection in the script and uploading files.  
 
-## Download JAWS 'cd /opt' and 'git clone https://github.com/411Hall/JAWS.git'  
+## Download JAWS
+'cd /opt' and 'git clone https://github.com/411Hall/JAWS.git'  
 Review the README.md 'cat /opt/JAWS/README.md'  
   
 Start our metasploit listener 'msfconsole -r /var/www/html/hta_attack/unicorn.rc'  
