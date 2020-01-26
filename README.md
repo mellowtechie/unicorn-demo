@@ -93,7 +93,7 @@ git clone https://github.com/411Hall/JAWS.git
 Review the README.md  
 
 ```
-less /opt/JAWS/README.md\
+less /opt/JAWS/README.md
 ```  
 
 ## Optional - Adding delivery via spearphishing
