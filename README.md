@@ -1,19 +1,31 @@
 # Unicorn Demo 
-I have built this as a way to demo attacking a Windows 7 machine using metasploit and Unicorn's HTA attack.  
-Todd Murray pdxgeek57@gmail.com
+I have built this demonstrate attacking a Windows 7 machine using Metasploit and Unicorn's HTA attack.  
 
 ## Environment Details
 
-Kali from https://www.kali.org/downloads/  
+Kali Linux from https://www.kali.org/downloads/  
 Unicorn from https://github.com/trustedsec/unicorn  
 Windows 7 ISO en_windows_7_professional_with_sp1_x64_dvd_u_676939.iso from https://the-eye.eu/public/MSDN/Windows%207/  
-I used VMware 11.5 on MacOS Catalina 10.15.2 but you can use other HyperVisors.  
+VMware 11.5 on MacOS Catalina 10.15.2 but you can use other HyperVisors.  
 **I would NOT reccomend AWS/Azure as they may interpret these activities as malicous and kill your environment/account**  
-Note that VMware versions lower than 11 have display issues with VM's on Catalina  
+VMware Fusion lower than 11 have display issues with VM's on MacOS Catalina  
 
 ## Kali Setup
 
-Download and Install the latest Kali Linux 64-Bit Image  
+Download and install the latest Kali Linux 64-Bit Image https://www.kali.org/downloads/  
+Once your VM is up and running login prepare Metasploit, Apache, and Postgresql for use.
+
+'''
+apt update
+apt upgrade
+systemctl enable postgresql
+systemctl enable apache2
+systemctl start postgresql
+systemctl start apache2
+msfconsole
+exit
+'''
+, perform all available updates, and enable Apache and Postgresql, and start up Metasp
 Run 'apt update' and then 'apt upgrade'. This will update Kali to the latest including metasploit which we will be using.  
 Enable Postgresql and Apache2 to start at boot 'systemctl enable postgresql' and 'systemctl enable apache2'  
 Start Postgresql and Apache2 "systemctl start postgresql' and 'systemctl start apache2'  
@@ -21,9 +33,9 @@ Start Metasploit "msfconsole' to initialize the db then 'exit' out
 
 ## Windows 7 Setup
  
-Install Windows in a trial, no key is needed unless you have a valid license  
-During install I created an administrator account named "admin". IF you use somethign else you will need to make changes later on.  
-If you are testing against an AV solution make sure its in "Detect Only" mode.  
+Install Window 7s. My testing was done as a trial installation. 
+During install I created an administrator account named "admin". If you use a different login you will need to make changes later on.  
+If you are testing against an AV solution, ensure your policies are in "Detect Only" mode.  
 Upgrade Internet Explorer to version 11 by downloading to your host system and then dragging the exe into your VM  
     Note that Windows 7 lacks the appropriate certificates to browse https sites without this update https://go.microsoft.com/fwlink/?LinkId=324629
 Disable UAC. You can google this if your not sure how.  
