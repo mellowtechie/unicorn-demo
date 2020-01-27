@@ -179,7 +179,7 @@ clearev
 exit
 ```
 
-For fun, copy/paste the hashes and see if you can convert them to plaintext in jacktheripper or https://crackstation.net/.  
+For fun, copy/paste the hashes and see if you can convert them to plaintext in johntheripper or https://crackstation.net/.  
 This step may take some additional research on your part.
 
 ## Review exlif.txt
