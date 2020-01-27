@@ -120,8 +120,7 @@ less /opt/unicorn-demo/README.md
 
 ### Unicorn Demo Assumptions
 
-My script is based on being logged in as a user named "admin", you will have to make modifications if you used a different account in your Windows 7 VM.  
-Ensure the quotes in the file remain quotes, some text editors try to change one to a reverse quote which breaks the process  
+Before running the demo.rc make sure you edit the file and update the IP address to that of your Kali VM so the persistence connects back   
 You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and some commands cause a keyboard buffering problem, so I only do base collection in the script and upload the Launcher.hta and JAWS script.  
 
 ## Start the Metasploit listener
