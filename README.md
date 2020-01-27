@@ -174,7 +174,7 @@ Assuming that works we shoudl be able finish by performing a hashdump and clear 
 ```
 ps  
 migrate 592
-hashdump' 
+hashdump
 clearev
 exit
 ```
