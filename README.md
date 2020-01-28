@@ -139,7 +139,7 @@ This launches our listener using windows/meterpreter/reverse_tcp on port 4444.
 Launch the attack by clicking the email link or browsing to http://172.16.105.131/hta_attack/ in Internet Explorer in your WIndows 7 VM.  
 When prompted, run/open the Launcher.hta.   
 This will generate a reverse tcp onto port 4444, you should see the session start.  
-Once the session is connected we will interact with that session to collect information, migrate to a SYSTEM process, and clean up our activity leaving Launcher.hta to start automatically when the "admin" user logs in.
+Once the session is connected we will interact with that session to collect information, migrate to a SYSTEM process, and clean up our activity leaving a peristent registry key to reconnect on restart.
 
 ```
 sessions -i
@@ -147,7 +147,9 @@ sessions -i 1
 run /opt/unicorn-demo/demo.rc
 ```
 
-That completes the commands in my demo.rc script. Next we will interact with the Windows shell, commands must be executed one at a time.
+That completes the commands in my demo.rc script.  
+**The final command leaves a randomly generated key name in `HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run` which runs a VBscript that must be deleted before rerunning the script. This is on purpose as the last command in demo.rc makes the threat peristent on system boot**
+Next we will interact with the Windows shell, commands must be executed one at a time.
 
 ```
 shell  
