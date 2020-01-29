@@ -1,5 +1,5 @@
 # Unicorn Demo 
-I have built this demonstrate attacking a Windows 7 machine using Metasploit and Unicorn's HTA attack.  
+I have built this to demonstrate attacking a Windows 7 machine using Metasploit and Unicorn's HTA attack.  
 
 ## Environment Details
 
