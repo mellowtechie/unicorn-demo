@@ -25,7 +25,7 @@ systemctl start apache2
 msfconsole  
 exit
 ```
-Those steps will update Kali, enable postgresql and apache to start automatically, and initiliaze your Metasploit database.
+Those steps will update Kali, enable postgresql and apache to start automatically, and initialize the Metasploit database.
 
 ## Windows 7 Setup
  
@@ -96,12 +96,12 @@ Review the README.md
 less /opt/JAWS/README.md
 ```  
 
-## Optional - Adding delivery via spearphishing
+## Optional - Adding delivery via SpearPhishing
 
 What I did next was generate a security event warning to my Google email. I copied the email and changed the "Check Activity" URL to the payload URL.  
 I also went into my Google account to the Security settings page and saved this page.  
 I then edited /var/www/html/hta_attack/index.html and inserted the google code below the existing code making a slight modification to tell users to run the Security Checker tool when prompted.  
-It's not perfect but its good enough to demonstrate a phishing attempt. You could clean this all up to better replicate the FROM address on the email and ensure the page looks exactly like the Google page.
+It's not perfect but it's good enough to demonstrate a phishing attempt. You could clean this all up to better replicate the FROM address on the email and ensure the page looks exactly like the Google page.
 
 ## Download Unicorn Demo
 
@@ -146,10 +146,10 @@ This launches our listener using windows/meterpreter/reverse_tcp on port 4444.
 
 ## Launch the attack
 
-Launch the attack by clicking the email link or browsing to http://172.16.105.131/hta_attack/ in Internet Explorer in your WIndows 7 VM.  
+Launch the attack by clicking the email link or browsing to http://172.16.105.131/hta_attack/ in Internet Explorer in your Windows 7 VM.  
 When prompted, run/open the Launcher.hta.   
 This will generate a reverse tcp onto port 4444, you should see the session start.  
-Once the session is connected we will interact with that session to collect information, migrate to a SYSTEM process, and clean up our activity leaving a peristent registry key to reconnect on restart.
+Once the session is connected we will interact with that session to collect information, migrate to a SYSTEM process, and clean up our activity leaving a persistent registry key to reconnect on restart.
 
 ```
 sessions -i
@@ -177,7 +177,7 @@ rm exfil.txt
 
 Next we will look for the pid of the Lsass.exe process and migrate to that.  
 If the pid you see when you run `ps` if different use the one you see.
-Assuming that works we shoudl be able finish by performing a hashdump and clear the Windows Event Logs.  
+Assuming that works, we should be able finish by performing a hashdump and clear the Windows Event Logs.  
 
 ```
 run post/windows/manage/migrate
@@ -199,12 +199,12 @@ less /opt/exfil.txt
 
 ## Results
 
-If you have followed this precisely you should have gathered plenty of system information, have a exfil.txt file in /opt, Launcher.hta should now be persitent by being in the users Start Menu > Startup.  
+If you have followed this precisely you should have gathered plenty of system information, have a exfil.txt file in /opt, Launcher.hta should now be persistent by being in the users Start Menu > Startup.  
 Reboot your Windows 7 VM to test, it should reconnect as session 2 after you login.
 
 ## Cleanup
 
 The final command in demo.rc leaves a randomly generated key name in `HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run`.  
 This runs a VBscript that must be deleted before rerunning the demo.rc script.  
-This is on purpose as the last command in demo.rc makes the threat peristent on system boot.  
-If this registry key exists multiple times or is not removed you may recieved a VBscript error when you login. 
+This is on purpose as the last command in demo.rc makes the threat persistent on system boot.  
+If this registry key exists multiple times or is not removed, you may recieve a VBscript error when you login or run the demo.rc script. 
