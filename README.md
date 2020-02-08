@@ -22,7 +22,7 @@ systemctl enable postgresql
 systemctl enable apache2  
 systemctl start postgresql  
 systemctl start apache2  
-msfconsole  
+msfdb init  
 exit
 ```
 Those steps will update Kali, enable postgresql and apache to start automatically, and initialize the Metasploit database.
