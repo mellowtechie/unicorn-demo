@@ -109,7 +109,7 @@ I have select a few commands to run as a script in the meterpreter environment a
 
 ```
 cd /opt
-git clone https://github.com/wond696/unicorn-demo.git
+git clone https://github.com/mellowtechie/unicorn-demo.git
 ```
 
 Review the README.md  
